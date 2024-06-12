@@ -1,11 +1,13 @@
 'use client';
 
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { ArrowUpRightIcon } from 'lucide-react';
+import { ArrowUpRightIcon, GithubIcon } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 import Link from 'next/link';
+import { Project } from '@/types/project';
 
 const animation = {
   hide: {
@@ -18,23 +20,13 @@ const animation = {
   }
 };
 
-type ProjectMetadata = {
-  name: string;
-  description: string;
-  website: string;
-  github: string;
-  techstack: Array<{ label: string }>;
-  selected: boolean;
-  slug: string;
-};
-
 type HeaderProps = {
-  metadata: ProjectMetadata;
+  metadata: Project;
 };
 
 const Header = (props: HeaderProps) => {
   const {
-    metadata: { name, description, website, github }
+    metadata: { title, description, technologies, previewlink, githublink }
   } = props;
 
   return (
@@ -45,7 +37,16 @@ const Header = (props: HeaderProps) => {
         animate={animation.show}
       >
         <div className="flex flex-col gap-3">
-          <div className="text-3xl font-bold">{name}</div>
+          <div className="flex items-center justify-between text-3xl font-bold">
+            <span>{title}</span>
+            {technologies && (
+              <div className="space-x-1">
+                {technologies.map((tech, index) => (
+                  <Badge key={index}>{tech}</Badge>
+                ))}
+              </div>
+            )}
+          </div>
           <div>{description}</div>
         </div>
       </motion.div>
@@ -55,17 +56,22 @@ const Header = (props: HeaderProps) => {
         animate={animation.show}
         transition={{ delay: 0.1 }}
       >
-        {website && (
-          <Link href={website} className={cn(buttonVariants(), 'group')}>
+        {previewlink && (
+          <Link
+            href={previewlink}
+            target="_BLANK"
+            className={cn(buttonVariants(), 'group')}
+          >
             Visit Website
             <ArrowUpRightIcon className="ml-2 size-5" />
           </Link>
         )}
-        {github && (
-          <Link href={github} className={cn(buttonVariants(), 'group')}>
-            Github
-            <ArrowUpRightIcon className="ml-2 size-5" />
-          </Link>
+        {githublink && (
+          <Button asChild variant={'outline'}>
+            <Link href={githublink} target="_BLANK">
+              View Source <ArrowUpRightIcon className="ml-2 size-5" />
+            </Link>
+          </Button>
         )}
       </motion.div>
     </div>

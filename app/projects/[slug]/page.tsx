@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { getAllPages, getPage, type ProjectMetadata } from '@/lib/mdx';
 import Header from './header';
+import { getProject } from '@/functions/get';
 
 type ProjectPageProps = {
   params: {
@@ -73,32 +74,35 @@ export const generateMetadata = async (
   };
 };
 
-const ProjectPage = (props: ProjectPageProps) => {
+async function ProjectPage(props: ProjectPageProps) {
   const {
     params: { slug }
   } = props;
 
-  const project = getPage<ProjectMetadata>(`projects/${slug}`);
+  // const project = getPage<ProjectMetadata>(`projects/${slug}`);
+
+  const project = await getProject(slug);
 
   if (!project) {
     notFound();
   }
 
-  const { metadata, content } = project;
+  // const { metadata, content } = project;
 
   return (
     <div className="container mx-auto">
-      <Header metadata={metadata} />
+      <Header metadata={project} />
       <Image
-        src={`/images/projects/${slug}/cover.jpg`}
+        // src={`/images/projects/${slug}/cover.jpg`|| '/placeholder.svg'}
+        src={'/placeholder.svg'}
         width={1280}
         height={832}
-        alt={metadata.name}
+        alt={project.title}
         className="my-12 rounded-lg"
       />
-      {content}
+      {/* {content} */}
     </div>
   );
-};
+}
 
 export default ProjectPage;

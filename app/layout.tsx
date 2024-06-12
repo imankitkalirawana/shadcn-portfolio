@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
+import ProgressBar from '@/components/ProgressBar';
 
 import { metadata as meta } from './config';
 
@@ -105,6 +106,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <ProgressBar />
           <Toaster />
         </ThemeProvider>
       </body>

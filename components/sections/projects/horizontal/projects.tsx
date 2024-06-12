@@ -5,8 +5,13 @@ import Reveal from '@/components/reveal';
 
 import { projects } from '@/components/sections/projects/config';
 import MotionWrap from '@/components/motion-wrap';
+import { Project } from '@/types/project';
 
-function Projects() {
+interface ProjectProps {
+  data: Project[];
+}
+
+function Projects({ data }: ProjectProps) {
   return (
     <MotionWrap className="w-full py-24 lg:py-32" id="projects">
       <div className="space-y-4 px-4 md:space-y-6 md:px-6 lg:space-y-10">
@@ -29,11 +34,11 @@ function Projects() {
           </p>
         </div>
         <div className="mt-6 grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-          {projects.map((project, index) => (
+          {data.map((project, index) => (
             <ProjectCard
               key={index}
               slug={project.slug}
-              name={project.name}
+              title={project.title}
               description={project.description}
               thumbnail={project.thumbnail}
             />
